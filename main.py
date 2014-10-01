@@ -4,12 +4,14 @@ def checkSousArgs(arg, nomArg):
     try:
         # Conversion en entier
         nb = int(arg[1])
+
         # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
         if (checkIntNatural(nb) == False):
             raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
         if (checkIntInfCent(nb) == False):
             raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
         # Si il n'y a pas d'erreur, on retourne la valeur 0
+        setattr(agrs,nomArg, [arg[0],nb])
         else:
             return 0
     except Exception as er:
@@ -24,7 +26,7 @@ def checkIntNatural(nb):
         return True
     else:
         return False
-    
+
 ''' Vérifie qu'un nombre est inférieur à 100 '''
 def checkIntInfCent(nb):
     if nb < 100:
@@ -77,10 +79,12 @@ args = parser.parse_args()
 for ARG in ['titre','genre','sousgenre','artiste','album']:
     if getattr(args, ARG) is not None:
         logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
+
+
 # On vérifie que le 2em sous argument de genre est bien un entier naturel
 if checkSousArgs(args.genre,'genre') == 0:
     print ('ok')
-    
-    
+
+
 logging.debug(' *****************************************')
 # la commande exit(0) permet de quitter le programme sans omettre d'erreur, alors que exit(1) lève une erreur
